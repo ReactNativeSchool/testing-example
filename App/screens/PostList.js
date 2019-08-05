@@ -7,6 +7,7 @@ import {
   FlatList,
   View
 } from "react-native";
+import { api } from "../util/api";
 
 const styles = StyleSheet.create({
   row: {
@@ -25,11 +26,9 @@ class PostList extends React.Component {
   }
 
   getPosts = () => {
-    fetch("https://jsonplaceholder.typicode.com/posts")
-      .then(res => res.json())
-      .then(posts => {
-        this.setState({ posts });
-      });
+    api("/posts").then(posts => {
+      this.setState({ posts });
+    });
   };
 
   render() {

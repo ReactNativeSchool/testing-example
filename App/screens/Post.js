@@ -8,6 +8,7 @@ import {
   View,
   ScrollView
 } from "react-native";
+import { api } from "../util/api";
 
 const styles = StyleSheet.create({
   content: {
@@ -32,19 +33,15 @@ class PostList extends React.Component {
   }
 
   getPost = postId => {
-    fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
-      .then(res => res.json())
-      .then(post => {
-        this.setState({ post });
-      });
+    api(`/posts/${postId}`).then(post => {
+      this.setState({ post });
+    });
   };
 
   getComments = postId => {
-    fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`)
-      .then(res => res.json())
-      .then(comments => {
-        this.setState({ comments });
-      });
+    api(`/posts/${postId}/comments`).then(comments => {
+      this.setState({ comments });
+    });
   };
 
   render() {

@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@unimodules/react-native-adapter": "^3.0.0",
     "expo": "^31.0.2",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
@@ -18,9 +19,12 @@
   "devDependencies": {
     "babel-preset-expo": "^5.0.0",
     "jest-expo": "^34.0.0",
-    "jest-fetch-mock": "^2.1.2"
+    "jest-fetch-mock": "^2.1.2",
+    "react-native-testing-library": "^1.11.1",
+    "react-test-renderer": "^16.8.6"
   },
   "jest": {
+    "preset": "jest-expo",
     "automock": false,
     "setupFiles": [
       "./setupJest.js"

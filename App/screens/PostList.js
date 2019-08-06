@@ -18,7 +18,9 @@ const styles = StyleSheet.create({
 
 class PostList extends React.Component {
   state = {
-    posts: []
+    posts: [],
+    loading: true,
+    error: null
   };
 
   componentDidMount() {
@@ -26,18 +28,24 @@ class PostList extends React.Component {
   }
 
   getPosts = () => {
-    api("/posts").then(posts => {
-      this.setState({ posts });
-    });
+    api("/posts")
+      .then(posts => {
+        this.setState({ posts, loading: false, error: null });
+      })
+      .catch(error => {
+        this.setState({ loading: false, error: error.message });
+      });
   };
 
   render() {
     return (
       <SafeAreaView>
         <FlatList
+          testID="post-list"
           data={this.state.posts}
           renderItem={({ item }) => (
             <TouchableOpacity
+              testID="post-row"
               style={styles.row}
               onPress={() =>
                 this.props.navigation.navigate("Post", { postId: item.id })
@@ -47,6 +55,17 @@ class PostList extends React.Component {
             </TouchableOpacity>
           )}
           keyExtractor={item => item.id.toString()}
+          ListEmptyComponent={() => {
+            if (this.state.loading) {
+              return <Text testID="loading-message">Loading</Text>;
+            }
+
+            if (this.state.error) {
+              return <Text testID="error-message">{this.state.error}</Text>;
+            }
+
+            return <Text testID="no-results">Sorry, no results found.</Text>;
+          }}
         />
       </SafeAreaView>
     );

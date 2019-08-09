@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "react-native start",
-    "test": "jest",
+    "test": "jest . --testPathIgnorePatterns e2e/ node_modules/",
+    "test:e2e": "detox test",
     "lint": "eslint ."
   },
   "dependencies": {
@@ -19,6 +20,7 @@
     "@babel/runtime": "^7.5.5",
     "@react-native-community/eslint-config": "^0.0.5",
     "babel-jest": "^24.8.0",
+    "detox": "^14.0.1",
     "eslint": "^6.1.0",
     "jest": "^24.8.0",
     "jest-fetch-mock": "^2.1.2",
@@ -32,5 +34,16 @@
     "setupFiles": [
       "./setupJest.js"
     ]
+  },
+  "detox": {
+    "configurations": {
+      "ios.sim.debug": {
+        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/Aug19Tutorials.app",
+        "build": "xcodebuild -workspace ios/Aug19Tutorials.xcworkspace -scheme Aug19Tutorials -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+        "type": "ios.simulator",
+        "name": "iPhone X"
+      }
+    },
+    "test-runner": "jest"
   }
 }

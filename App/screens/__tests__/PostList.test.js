@@ -8,21 +8,25 @@ test("renders a list of posts", async () => {
   fetch.mockResponseOnce(
     JSON.stringify([{ id: 1, title: "1" }, { id: 2, title: "2" }])
   );
-  const { queryAllByTestId, getAllByTestId } = render(<PostList />);
+  const {
+    queryAllByTestId,
+    getAllByTestId,
+    queryByTestId,
+    getByTestId
+  } = render(<PostList />);
 
-  expect(queryAllByTestId("post-row").length).toBe(0);
+  expect(queryByTestId("post-row-0")).toBeNull();
 
   await waitForElement(() => {
-    return getAllByTestId("post-row");
+    return queryByTestId("post-row-0");
   });
 
-  expect(getAllByTestId("post-row").length).toBe(2);
+  expect(getByTestId("post-row-0"));
 });
 
 test("renders a loading component initially", () => {
   const { getByTestId, queryAllByTestId } = render(<PostList />);
   expect(getByTestId("loading-message"));
-  expect(queryAllByTestId("post-row").length).toBe(0);
 });
 
 test("render message that no results found if empty array returned", async () => {
@@ -33,7 +37,7 @@ test("render message that no results found if empty array returned", async () =>
     return getByTestId("no-results");
   });
 
-  expect(queryAllByTestId("post-row").length).toBe(0);
+  expect(getByTestId("no-results"));
 });
 
 test("render error message if error thrown from api", async () => {
@@ -47,5 +51,4 @@ test("render error message if error thrown from api", async () => {
   });
 
   expect(getByText("An error occurred."));
-  expect(queryAllByTestId("post-row").length).toBe(0);
 });

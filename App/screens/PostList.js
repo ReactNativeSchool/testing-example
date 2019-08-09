@@ -43,9 +43,9 @@ class PostList extends React.Component {
         <FlatList
           testID="post-list"
           data={this.state.posts}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <TouchableOpacity
-              testID="post-row"
+              testID={`post-row-${index}`}
               style={styles.row}
               onPress={() =>
                 this.props.navigation.navigate("Post", { postId: item.id })

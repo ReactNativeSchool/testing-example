@@ -9,5 +9,6 @@ describe("PostList", () => {
       .toBeVisible()
       .withTimeout(2000);
     await element(by.id("post-row-0")).tap();
+    await expect(element(by.id("post-title"))).toBeVisible();
   });
 });

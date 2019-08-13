@@ -53,10 +53,13 @@ class PostList extends React.Component {
         <FlatList
           testID="post-list"
           data={this.state.posts}
-          renderItem={rowProps => (
+          renderItem={({ item, index }) => (
             <PostRow
-              {...rowProps}
-              onPress={() => navigation.navigate("Post", { postId: item.id })}
+              item={item}
+              index={index}
+              onPress={() =>
+                this.props.navigation.navigate("Post", { postId: item.id })
+              }
             />
           )}
           keyExtractor={item => item.id.toString()}

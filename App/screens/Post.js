@@ -48,7 +48,9 @@ class PostList extends React.Component {
     return (
       <SafeAreaView>
         <ScrollView contentContainerStyle={styles.content}>
-          <Text style={styles.title}>{this.state.post.title}</Text>
+          <Text style={styles.title} testID="post-title">
+            {this.state.post.title}
+          </Text>
           <Text>{this.state.post.body}</Text>
           <Text style={styles.title}>Comments</Text>
           <FlatList

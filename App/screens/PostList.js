@@ -16,6 +16,16 @@ const styles = StyleSheet.create({
   }
 });
 
+export const PostRow = ({ item, index, onPress }) => (
+  <TouchableOpacity
+    testID={`post-row-${index}`}
+    style={styles.row}
+    onPress={onPress}
+  >
+    <Text>{item.title}</Text>
+  </TouchableOpacity>
+);
+
 class PostList extends React.Component {
   state = {
     posts: [],
@@ -43,16 +53,11 @@ class PostList extends React.Component {
         <FlatList
           testID="post-list"
           data={this.state.posts}
-          renderItem={({ item, index }) => (
-            <TouchableOpacity
-              testID={`post-row-${index}`}
-              style={styles.row}
-              onPress={() =>
-                this.props.navigation.navigate("Post", { postId: item.id })
-              }
-            >
-              <Text>{item.title}</Text>
-            </TouchableOpacity>
+          renderItem={rowProps => (
+            <PostRow
+              {...rowProps}
+              onPress={() => navigation.navigate("Post", { postId: item.id })}
+            />
           )}
           keyExtractor={item => item.id.toString()}
           ListEmptyComponent={() => {

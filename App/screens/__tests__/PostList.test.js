@@ -4,7 +4,6 @@ import {
   waitForElement,
   fireEvent
 } from "react-native-testing-library";
-import renderer from "react-test-renderer";
 
 import PostList, { PostRow } from "../PostList.js";
 

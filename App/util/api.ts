@@ -1,4 +1,4 @@
-export const api = (path, options = {}) => {
+export const api = (path: string, options = {}): Promise<any> => {
   return fetch(`https://jsonplaceholder.typicode.com${path}`, options)
     .then(res => res.json())
     .then(response => {

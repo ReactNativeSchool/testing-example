@@ -5,7 +5,7 @@ import {
   fireEvent
 } from "react-native-testing-library";
 
-import PostList, { PostRow } from "../PostList.js";
+import PostList, { PostRow } from "../PostList";
 
 describe("PostList", () => {
   test("renders a loading component initially", () => {
@@ -14,7 +14,7 @@ describe("PostList", () => {
   });
 
   test("render message that no results found if empty array returned", async () => {
-    fetch.mockResponseOnce(JSON.stringify([]));
+    fetchMock.mockResponseOnce(JSON.stringify([]));
     const { getByTestId } = render(<PostList />);
 
     await waitForElement(() => {
@@ -25,7 +25,7 @@ describe("PostList", () => {
   });
 
   test("renders a list of posts", async () => {
-    fetch.mockResponseOnce(
+    fetchMock.mockResponseOnce(
       JSON.stringify([{ id: 1, title: "1" }, { id: 2, title: "2" }])
     );
     const { queryByTestId, getByTestId } = render(<PostList />);
@@ -40,7 +40,7 @@ describe("PostList", () => {
   });
 
   test("render error message if error thrown from api", async () => {
-    fetch.mockRejectOnce(new Error("An error occurred."));
+    fetchMock.mockRejectOnce(new Error("An error occurred."));
     const { getByTestId, toJSON, getByText } = render(<PostList />);
 
     await waitForElement(() => {
@@ -55,7 +55,7 @@ describe("PostRow", () => {
   test("is tappable", () => {
     const onPress = jest.fn();
     const { getByText } = render(
-      <PostRow index={0} item={{ title: "Test" }} onPress={onPress} />
+      <PostRow index={0} item={{ title: "Test", id: 0 }} onPress={onPress} />
     );
 
     fireEvent.press(getByText("Test"));

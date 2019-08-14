@@ -1,11 +1,11 @@
 import { api } from "../api";
 
 beforeEach(() => {
-  fetch.resetMocks();
+  fetchMock.resetMocks();
 });
 
 test("returns result if array", () => {
-  fetch.mockResponseOnce(JSON.stringify([{ id: 1 }]));
+  fetchMock.mockResponseOnce(JSON.stringify([{ id: 1 }]));
   const onResponse = jest.fn();
   const onError = jest.fn();
 
@@ -21,7 +21,7 @@ test("returns result if array", () => {
 });
 
 test("returns result if non-empty object", () => {
-  fetch.mockResponseOnce(JSON.stringify({ id: 1 }));
+  fetchMock.mockResponseOnce(JSON.stringify({ id: 1 }));
   const onResponse = jest.fn();
   const onError = jest.fn();
 
@@ -37,7 +37,7 @@ test("returns result if non-empty object", () => {
 });
 
 test("throws an error if empty object", () => {
-  fetch.mockResponseOnce(JSON.stringify({}));
+  fetchMock.mockResponseOnce(JSON.stringify({}));
   const onResponse = jest.fn();
   const onError = jest.fn();
 

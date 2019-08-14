@@ -20,8 +20,28 @@ const styles = StyleSheet.create({
   }
 });
 
-class PostList extends React.Component {
-  state = {
+export interface PostProps {
+  navigation: any;
+}
+
+export interface PostType {
+  title?: string;
+  body?: string;
+  id?: number;
+}
+
+export interface CommentType {
+  name: string;
+  id: number;
+}
+
+export interface PostState {
+  post: PostType;
+  comments: Array<CommentType>;
+}
+
+class PostList extends React.Component<PostProps, PostState> {
+  state: PostState = {
     post: {},
     comments: []
   };
@@ -32,14 +52,14 @@ class PostList extends React.Component {
     this.getComments(postId);
   }
 
-  getPost = postId => {
-    api(`/posts/${postId}`).then(post => {
+  getPost = (postId: number) => {
+    api(`/posts/${postId}`).then((post: PostType) => {
       this.setState({ post });
     });
   };
 
-  getComments = postId => {
-    api(`/posts/${postId}/comments`).then(comments => {
+  getComments = (postId: number) => {
+    api(`/posts/${postId}/comments`).then((comments: Array<CommentType>) => {
       this.setState({ comments });
     });
   };

@@ -16,7 +16,28 @@ const styles = StyleSheet.create({
   }
 });
 
-export const PostRow = ({ item, index, onPress }) => (
+// Types
+export interface item {
+  id: number;
+  title: string;
+}
+
+export interface PostRowProps {
+  item: item;
+  index: number;
+  onPress: () => void;
+}
+
+export interface PostListProps {
+  navigation?: any;
+}
+
+interface RenderItemType {
+  item: item;
+  index: number;
+}
+
+export const PostRow = ({ item, index, onPress }: PostRowProps) => (
   <TouchableOpacity
     testID={`post-row-${index}`}
     style={styles.row}
@@ -26,7 +47,7 @@ export const PostRow = ({ item, index, onPress }) => (
   </TouchableOpacity>
 );
 
-class PostList extends React.Component {
+class PostList extends React.Component<PostListProps> {
   state = {
     posts: [],
     loading: true,
@@ -53,7 +74,7 @@ class PostList extends React.Component {
         <FlatList
           testID="post-list"
           data={this.state.posts}
-          renderItem={({ item, index }) => (
+          renderItem={({ item, index }: RenderItemType) => (
             <PostRow
               item={item}
               index={index}

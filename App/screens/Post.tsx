@@ -6,18 +6,18 @@ import {
   StyleSheet,
   FlatList,
   View,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { api } from "../util/api";
 
 const styles = StyleSheet.create({
   content: {
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   title: {
     fontWeight: "bold",
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
 });
 
 export interface PostProps {
@@ -40,52 +40,48 @@ export interface PostState {
   comments: Array<CommentType>;
 }
 
-class PostList extends React.Component<PostProps, PostState> {
-  state: PostState = {
-    post: {},
-    comments: []
-  };
 
-  componentDidMount() {
-    const postId = this.props.navigation.getParam("postId");
-    this.getPost(postId);
-    this.getComments(postId);
-  }
+const Post = ({ navigation }: PostProps) => {
+  const [post, setPost] = React.useState<PostType>({});
+  const [comments, setComments] = React.useState<Array<CommentType>>([]);
+  React.useEffect(() => {
+    const postId = navigation.getParam("postId");
+    getPost(postId);
+    getComments(postId);
+  }, []);
 
-  getPost = (postId: number) => {
+  const getPost = (postId: number) => {
     api(`/posts/${postId}`).then((post: PostType) => {
-      this.setState({ post });
+      setPost(post);
     });
   };
 
-  getComments = (postId: number) => {
+  const getComments = (postId: number) => {
     api(`/posts/${postId}/comments`).then((comments: Array<CommentType>) => {
-      this.setState({ comments });
+      setComments(comments);
     });
   };
 
-  render() {
-    return (
-      <SafeAreaView>
-        <ScrollView contentContainerStyle={styles.content}>
-          <Text style={styles.title} testID="post-title">
-            {this.state.post.title}
-          </Text>
-          <Text>{this.state.post.body}</Text>
-          <Text style={styles.title}>Comments</Text>
-          <FlatList
-            data={this.state.comments}
-            renderItem={({ item }) => (
-              <View>
-                <Text>{item.name}</Text>
-              </View>
-            )}
-            keyExtractor={item => item.id.toString()}
-          />
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-}
+  return (
+    <SafeAreaView>
+      <ScrollView contentContainerStyle={styles.content}>
+        <Text style={styles.title} testID="post-title">
+          {post.title}
+        </Text>
+        <Text>{post.body}</Text>
+        <Text style={styles.title}>Comments</Text>
+        <FlatList
+          data={comments}
+          renderItem={({ item }) => (
+            <View>
+              <Text>{item.name}</Text>
+            </View>
+          )}
+          keyExtractor={(item) => item.id.toString()}
+        />
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
-export default PostList;
+export default Post;

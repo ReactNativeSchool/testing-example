@@ -47,50 +47,52 @@ export const PostRow = ({ item, index, onPress }: PostRowProps) => (
   </TouchableOpacity>
 );
 
-class PostList extends React.Component<PostListProps> {
-  state = {
-    posts: [],
-    loading: true,
-    error: null
-  };
+const PostList = ({navigation}: PostListProps) => {
+  
+  const [posts, setPosts] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
+  
+  React.useEffect(() => {
+    getPosts();
+  }, [])
 
-  componentDidMount() {
-    this.getPosts();
-  }
-
-  getPosts = () => {
+  const getPosts = () => {
     api("/posts")
       .then(posts => {
-        this.setState({ posts, loading: false, error: null });
+         setPosts(posts);
+         setLoading(false);
+         setError(null) ;
       })
       .catch(error => {
-        this.setState({ loading: false, error: error.message });
+        setLoading(false);
+        setError(error.message ) ;
       });
   };
 
-  render() {
+
     return (
       <SafeAreaView>
         <FlatList
           testID="post-list"
-          data={this.state.posts}
+          data={posts}
           renderItem={({ item, index }: RenderItemType) => (
             <PostRow
               item={item}
               index={index}
               onPress={() =>
-                this.props.navigation.navigate("Post", { postId: item.id })
+                navigation.navigate("Post", { postId: item.id })
               }
             />
           )}
           keyExtractor={item => item.id.toString()}
           ListEmptyComponent={() => {
-            if (this.state.loading) {
+            if (loading) {
               return <Text testID="loading-message">Loading</Text>;
             }
 
-            if (this.state.error) {
-              return <Text testID="error-message">{this.state.error}</Text>;
+            if (error) {
+              return <Text testID="error-message">{error}</Text>;
             }
 
             return <Text testID="no-results">Sorry, no results found.</Text>;
@@ -98,7 +100,7 @@ class PostList extends React.Component<PostListProps> {
         />
       </SafeAreaView>
     );
-  }
+  
 }
 
 export default PostList;
